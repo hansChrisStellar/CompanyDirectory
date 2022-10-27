@@ -7,6 +7,9 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- Modal Create Personnel -->
+    <?php include './Components/CreatePersonnelModal.php' ?>
+
     <!-- Modal Edit Personnel -->
     <?php include './Components/EditPersonnelModal.php' ?>
 

@@ -3,6 +3,7 @@
 # Database connections and variables $conn
 include("../Database.php");
 $executionStartTime = microtime(true);
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -18,7 +19,7 @@ if (mysqli_connect_errno()) {
 
 # Increment the personnel from the column of departments in the table of Departments
 $query = $conn->prepare("UPDATE department D SET D.empNmbr = D.empNmbr + 1 WHERE D.id = ?");
-$query->bind_param("i", $_REQUEST['department']);
+$query->bind_param("i", $_POST['department']);
 $query->execute();
 
 # If there was any error with the query
@@ -34,7 +35,7 @@ if (false === $query) {
 
 # Insert into the personnels the new personnel
 $query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, img) VALUES(?,?,?,?,?,?)');
-$query->bind_param("ssssis", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['job'], $_REQUEST['email'], $_REQUEST['department'], $_REQUEST['imgUser']);
+$query->bind_param("ssssis", $_POST['firstName'], $_POST['lastName'], $_POST['jobTitle'], $_POST['email'], $_POST['departmentID'], $_POST['img']);
 $query->execute();
 
 # If there was any error with the query

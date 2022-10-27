@@ -1,6 +1,6 @@
 import { personnelRequestedByID } from "./getPersonnelByID.js";
 
-// Input Texts
+// Inputs Texts
 document
   .querySelectorAll("#firstName, #lastName, #email, #jobTitle")
   .forEach((e) => {
@@ -16,7 +16,7 @@ document
     });
   });
 
-// Input dropdowns
+// Inputs Dropdowns
 // document.getElementById('')
 //    if (a.target.id === "departmentID") lastName = a.target.value;
 //    if (a.target.id === "img") jobTitle = a.target.value;
