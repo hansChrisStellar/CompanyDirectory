@@ -1,36 +1,41 @@
-import { personnelRequestedByID } from "./getPersonnelByID.js";
+import {
+  personnelRequestedByID,
+  clearOutPersonnel,
+} from "./getPersonnelByID.js";
 
 // Inputs Texts
 document
-  .querySelectorAll("#firstName, #lastName, #email, #jobTitle")
+  .querySelectorAll("#firstNameEdit, #lastNameEdit, #emailEdit, #jobTitleEdit")
   .forEach((e) => {
     e.addEventListener("input", (a) => {
-      if (a.target.id === "firstName")
+      if (a.target.id === "firstNameEdit")
         personnelRequestedByID.firstName = a.target.value;
-      if (a.target.id === "lastName")
+      if (a.target.id === "lastNameEdit")
         personnelRequestedByID.lastName = a.target.value;
-      if (a.target.id === "jobTitle")
-        personnelRequestedByID.jobTitle = a.target.value;
-      if (a.target.id === "email")
+      if (a.target.id === "jobTitleEdit");
+      personnelRequestedByID.jobTitle = a.target.value;
+      if (a.target.id === "emailEdit")
         personnelRequestedByID.email = a.target.value;
     });
   });
 
 // Inputs Dropdowns
-// document.getElementById('')
-//    if (a.target.id === "departmentID") lastName = a.target.value;
-//    if (a.target.id === "img") jobTitle = a.target.value;
-//    if (a.target.id === "id") email = a.target.value;
-
-document.getElementById("updatePersonnel").addEventListener("click", (e) => {
-  e.preventDefault();
-  updatePersonnel(personnelRequestedByID);
+document.querySelector("#departmentIDEdit").addEventListener("change", (a) => {
+  personnelRequestedByID.departmentID = a.target.value;
 });
+
+// Fire Update Personnel
+document
+  .getElementById("updatePersonnelEdit")
+  .addEventListener("click", (e) => {
+    e.preventDefault();
+    updatePersonnel(personnelRequestedByID);
+  });
 
 const updatePersonnel = async (personnelData) => {
   // Send the data to the PHP File with Fetch
   const response = await fetch(
-    "http://localhost/MyWebPortfolio_NoFrameworks/companydirectory/Back-End/Personnel/updatePersonnel.php",
+    "http://localhost/CompanyDirectory/Back-End/Personnel/updatePersonnel.php",
     {
       method: "POST",
       mode: "cors",
@@ -49,3 +54,12 @@ const updatePersonnel = async (personnelData) => {
       console.log("Success:", data);
     });
 };
+
+// Close Modal Edit Personnel
+document
+  .querySelector("#modalEditUser__BaseNavButtonGoBack")
+  .addEventListener("click", () => {
+    document.getElementById("modalEditUser").classList.remove("modalEditUser");
+    document.getElementById("modalEditUser").classList.add("notVisible");
+    clearOutPersonnel();
+  });

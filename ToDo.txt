@@ -1,5 +1,5 @@
 Haciendo
-poner el id del usuario en el modulo 
+- traer todas las localizaciones y establecer los dropdowns
 
 Importante
 

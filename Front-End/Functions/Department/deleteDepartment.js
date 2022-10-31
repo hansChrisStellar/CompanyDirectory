@@ -1,11 +1,11 @@
-const deletePersonnel = async (id) => {
+const deleteDepartment = async (id) => {
   const data = {
-    idUser: id,
+    id: id,
   };
 
   // AJAX the PHP function and send the ID
   const response = await fetch(
-    "http://localhost/CompanyDirectory/Back-End/Personnel/deletePersonnel.php",
+    "http://localhost/CompanyDirectory/Back-End/Department/deleteDepartmentByID.php",
     {
       method: "POST",
       mode: "cors",
@@ -28,4 +28,4 @@ const deletePersonnel = async (id) => {
     });
 };
 
-export { deletePersonnel };
+export { deleteDepartment };

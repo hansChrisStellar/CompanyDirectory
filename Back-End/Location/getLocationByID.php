@@ -4,6 +4,7 @@
 include("../Database.php");
 $executionStartTime = microtime(true);
 $location;
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -19,7 +20,7 @@ if (mysqli_connect_errno()) {
 
 # Query to select the location by ID
 $query = $conn->prepare('SELECT * from location WHERE id = ?');
-$query->bind_param("i", $_REQUEST['id']);
+$query->bind_param("i", $_POST['id']);
 $query->execute();
 
 # If there was any error with the query

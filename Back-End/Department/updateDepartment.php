@@ -4,6 +4,7 @@
 include("../Database.php");
 $executionStartTime = microtime(true);
 $data = [];
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -18,40 +19,40 @@ if (mysqli_connect_errno()) {
 }
 
 # Decrement the location from the column of departments
-$query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity - 1 WHERE L.id = ?");
-$query->bind_param("i", $_REQUEST['pastLocation']);
-$query->execute();
+// $query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity - 1 WHERE L.id = ?");
+// $query->bind_param("i", $_POST['pastLocation']);
+// $query->execute();
 
 # If there was a problem with the query
-if (false === $query) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-	mysqli_close($conn);
-	echo json_encode($output);
-	exit;
-}
+// if (false === $query) {
+// 	$output['status']['code'] = "400";
+// 	$output['status']['name'] = "executed";
+// 	$output['status']['description'] = "query failed";
+// 	$output['data'] = [];
+// 	mysqli_close($conn);
+// 	echo json_encode($output);
+// 	exit;
+// }
 
 # Increment the location from the column of departments
-$query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity + 1 WHERE L.id = ?");
-$query->bind_param("i", $_REQUEST['departmentLocationId']);
-$query->execute();
+// $query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity + 1 WHERE L.id = ?");
+// $query->bind_param("i", $_POST['departmentLocationId']);
+// $query->execute();
 
 # If there was a problem with the query
-if (false === $query) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-	mysqli_close($conn);
-	echo json_encode($output);
-	exit;
-}
+// if (false === $query) {
+// 	$output['status']['code'] = "400";
+// 	$output['status']['name'] = "executed";
+// 	$output['status']['description'] = "query failed";
+// 	$output['data'] = [];
+// 	mysqli_close($conn);
+// 	echo json_encode($output);
+// 	exit;
+// }
 
 # Prepare the query to update department
 $query = $conn->prepare('UPDATE department SET name=?, locationID=?, color=? WHERE id=?');
-$query->bind_param("sssi", $_REQUEST['departmentName'], $_REQUEST['departmentLocationId'], $_REQUEST['departmentColor'], $_REQUEST['departmentId']);
+$query->bind_param("sssi", $_POST['name'], $_POST['locationID'], $_POST['color'], $_POST['id']);
 $query->execute();
 
 

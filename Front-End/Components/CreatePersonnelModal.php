@@ -1,66 +1,135 @@
+
 <?php
 
-echo '<section class="modalEditUserOff" id="modalEditUser">
-      <article class="modalUserBase">
-        <div class="modalUserBaseUpperSide">
-          <h2>Edit Personnel</h2>
-          <button id="cancelModalEditPersonnel" class="buttonColor">
-            Go Back
-          </button>
-        </div>
-        <form class="modalUserBaseLowerSide formEditUser" >
-          <!-- Name -->
-          <input
-            type="text"
-            id="firstNameCreate"
-            class="inputFormPersonnel inputForm"
-            placeholder="Name *"
-          />
+echo 
+  '<section class="notVisible" id="modalCreateUser">
+    
+    <article class="modalCreateUser__Base">
 
-          <!-- Last Name -->
-          <input
-            type="text"
-            id="lastNameCreate"
-            class="inputFormPersonnel inputForm"
-            placeholder="Last Name *"
-          />
+      <nav class="modalCreateUser__BaseNav">
 
-          <!-- Job Title -->
-          <input
-            type="text"
-            id="jobTitleCreate"
-            class="inputFormPersonnel inputForm"
-            placeholder="Job Title *"
-          />
+        <h2 class="modalCreateUser__BaseNavTitle">Create Personnel</h2>
 
-          <!-- Email -->
-          <input
-            type="email"
-            id="emailCreate"
-            class="inputFormPersonnel inputForm"
-            placeholder="Email *"
-          />
+        <button id="modalCreateUser__BaseNavButtonGoBack" class="modalCreateUser__BaseNavButtonGoBack">
+          Go Back
+        </button>
 
-            <!-- Departments -->
-            <select
-                id="departmentID"
-                class=""
-            ></select>
+      </nav>
 
-          <!-- Send -->
-          <button
-            type="submit"
-            class="inputSend"
-            id="insertPersonnel"
-          >
-            Create User
-          </button>
-        </form>
-      </article>
-</section>';
+      <form class="modalCreateUser__BaseForm" >
+
+        <!-- Name -->
+        <input
+          type="text"
+          id="firstNameCreate"
+          class="modalCreateUser__BaseFormInput"
+          placeholder="Name *"
+        />
+
+        <!-- Last Name -->
+        <input
+          type="text"
+          id="lastNameCreate"
+          class="modalCreateUser__BaseFormInput"
+          placeholder="Last Name *"
+        />
+
+        <!-- Job Title -->
+        <input
+          type="text"
+          id="jobTitleCreate"
+          class="modalCreateUser__BaseFormInput"
+          placeholder="Job Title *"
+        />
+
+        <!-- Email -->
+        <input
+          type="email"
+          id="emailCreate"
+          class="modalCreateUser__BaseFormInput"
+          placeholder="Email *"
+        />
+
+        <!-- Departments -->
+        <select
+            id="departmentIDCreate"
+            class="modalCreateUser__BaseFormInput"
+        ></select>
+
+        <!-- Send -->
+        <button
+          type="submit"
+          class="modalCreateUser__BaseFormButtonSend"
+          id="createPersonnel"
+        >
+          Update User
+        </button>
+
+      </form>
+
+    </article>
+
+  </section>';
 ?>
 
-<script type="module" src="http://localhost/MyWebPortfolio_NoFrameworks/companydirectory/Front-End/Functions/Personnel/insertPersonnel.js">
+<style>
+
+  .notVisible {
+    background-color: red;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.2s;
+  }
+
+  .modalCreateUser{
+    background-color: red;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+    opacity: 1;
+    transition: 0.2s;
+  }
+
+  .modalCreateUser__Base {
+    display: flex;
+    flex-direction: column;
+    background-color: blue;
+    padding: 1rem;
+  }
+
+  .modalCreateUser__BaseNav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modalCreateUser__BaseNav {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .modalCreateUser__BaseForm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modalCreateUser__BaseFormInput {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<script type="module" src="http://localhost/CompanyDirectory/Front-End/Functions/Personnel/insertPersonnel.js">
 
     
 </script>

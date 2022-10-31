@@ -3,6 +3,7 @@
 # Database connections and variables $conn
 include("../Database.php");
 $executionStartTime = microtime(true);
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -18,7 +19,7 @@ if (mysqli_connect_errno()) {
 
 # Insert into the locations the new location
 $query = $conn->prepare('INSERT INTO location (name, color) VALUES(?,?)');
-$query->bind_param("ss", $_REQUEST['nameLocation'], $_REQUEST['colorLocation']);
+$query->bind_param("ss", $_POST['name'], $_POST['color']);
 $query->execute();
 
 # If there was any error with the query

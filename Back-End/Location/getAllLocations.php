@@ -4,6 +4,7 @@
 include("../Database.php");
 $executionStartTime = microtime(true); 
 $data = [];
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {

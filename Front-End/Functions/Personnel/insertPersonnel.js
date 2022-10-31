@@ -27,7 +27,15 @@ document
     });
   });
 
-document.getElementById("insertPersonnel").addEventListener("click", (e) => {
+// Inputs Dropdowns
+document
+  .querySelector("#departmentIDCreate")
+  .addEventListener("change", (a) => {
+    newPersonnelData.departmentID = a.target.value;
+  });
+
+// Create User Button
+document.getElementById("createPersonnel").addEventListener("click", (e) => {
   e.preventDefault();
   insertPersonnel(newPersonnelData);
 });
@@ -35,7 +43,7 @@ document.getElementById("insertPersonnel").addEventListener("click", (e) => {
 const insertPersonnel = async (newPersonnelData) => {
   // AJAX the PHP function and send the ID
   const response = await fetch(
-    "http://localhost/MyWebPortfolio_NoFrameworks/companydirectory/Back-End/Personnel/insertPersonnel.php",
+    "http://localhost/CompanyDirectory/Back-End/Personnel/insertPersonnel.php",
     {
       method: "POST",
       mode: "cors",
@@ -54,5 +62,23 @@ const insertPersonnel = async (newPersonnelData) => {
       console.log("Success:", data);
     });
 };
+
+// Open Modal Create Personnel
+document
+  .getElementById("openModalCreatePersonnel")
+  .addEventListener("click", () => {
+    document.getElementById("modalCreateUser").classList.add("modalCreateUser");
+    document.getElementById("modalCreateUser").classList.remove("notVisible");
+  });
+
+// Close Modal Edit Personnel
+document
+  .querySelector("#modalCreateUser__BaseNavButtonGoBack")
+  .addEventListener("click", () => {
+    document
+      .getElementById("modalCreateUser")
+      .classList.remove("modalCreateUser");
+    document.getElementById("modalCreateUser").classList.add("notVisible");
+  });
 
 export { insertPersonnel };

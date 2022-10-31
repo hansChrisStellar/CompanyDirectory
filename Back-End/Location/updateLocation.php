@@ -3,6 +3,7 @@
 # Database connections and variables $conn
 include("../Database.php");
 $executionStartTime = microtime(true);
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -18,7 +19,7 @@ if (mysqli_connect_errno()) {
 
 # Query to update the location provided
 $query = $conn->prepare('UPDATE location SET name=?, color=? WHERE id=?');
-$query->bind_param("ssi", $_REQUEST['locationName'], $_REQUEST['locationColor'], $_REQUEST['idLocation']);
+$query->bind_param("ssi", $_POST['name'], $_POST['color'], $_POST['id']);
 $query->execute();
 
 # If there was a problem with the query

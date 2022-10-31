@@ -4,6 +4,7 @@
 include("../Database.php");
 $executionStartTime = microtime(true);
 $data = [];
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -19,7 +20,7 @@ if (mysqli_connect_errno()) {
 
 # If there's not an error we procced to read a department by ID 
 $query = $conn->prepare('SELECT id, name, locationID, color FROM department WHERE id = ?');
-$query->bind_param("i", $_REQUEST['id']);
+$query->bind_param("i", $_POST['id']);
 $query->execute();
 
 # If there was a problem reading the query

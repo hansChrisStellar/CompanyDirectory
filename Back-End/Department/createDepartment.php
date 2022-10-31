@@ -3,6 +3,7 @@
 # Database connections and variables $conn
 include("../Database.php");
 $executionStartTime = microtime(true);
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -18,7 +19,7 @@ if (mysqli_connect_errno()) {
 
 # Increment the location from the column of departments in the table of Locations
 $query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity + 1 WHERE L.id = ?");
-$query->bind_param("i", $_REQUEST['locationID']);
+$query->bind_param("i", $_POST['locationID']);
 $query->execute();
 
 
@@ -35,7 +36,7 @@ if (false === $query) {
 
 # Insert into the departments the new department
 $query = $conn->prepare('INSERT INTO department (name, locationID, color) VALUES(?,?,?)');
-$query->bind_param("sis", $_REQUEST['name'], $_REQUEST['locationID'], $_REQUEST['color']);
+$query->bind_param("sis", $_POST['name'], $_POST['locationID'], $_POST['color']);
 $query->execute();
 
 # If there was any error with the query

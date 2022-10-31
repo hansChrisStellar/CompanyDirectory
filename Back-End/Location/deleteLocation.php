@@ -3,6 +3,7 @@
 # Database connections and variables $conn
 include("../Database.php");
 $executionStartTime = microtime(true);
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 # If there's an error connecting the Database
 if (mysqli_connect_errno()) {
@@ -17,29 +18,29 @@ if (mysqli_connect_errno()) {
 }	
 
 # Check if there's a relation within the location and the departments or if theres any department inside the location 
-$query = 'SELECT COUNT(*) FROM department WHERE locationID=' . $_REQUEST['idLocation'];
-$result = $conn->query($query);
-$data = [];
+// $query = 'SELECT COUNT(*) FROM department WHERE locationID=' . $_POST['idLocation'];
+// $result = $conn->query($query);
+// $data = [];
 
-while ($row = mysqli_fetch_assoc($result)) {
-	array_push($data, $row);
-}
+// while ($row = mysqli_fetch_assoc($result)) {
+// 	array_push($data, $row);
+// }
 
 # If theres a relation
-if (intval($data[0]["COUNT(*)"]) > 0) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed for relationship";	
-	$output['status']['has_relation'] = true;	
-	$output['data'] = [];
-	mysqli_close($conn);
-	echo json_encode($output); 
-	exit;
-}
+// if (intval($data[0]["COUNT(*)"]) > 0) {
+// 	$output['status']['code'] = "400";
+// 	$output['status']['name'] = "executed";
+// 	$output['status']['description'] = "query failed for relationship";	
+// 	$output['status']['has_relation'] = true;	
+// 	$output['data'] = [];
+// 	mysqli_close($conn);
+// 	echo json_encode($output); 
+// 	exit;
+// }
 
 # If there's not a relation, procced to delete department
 $query = $conn->prepare('DELETE FROM location WHERE id=?');
-$query->bind_param("i", $_REQUEST['idLocation']);
+$query->bind_param("i", $_POST['id']);
 $query->execute();
 
 # If there's a problem with the query
