@@ -1,5 +1,8 @@
 import { getLocationByID } from "./getLocationByID.js";
-
+import {
+  filterPersonnel,
+  removeFilterPersonnel,
+} from "../Personnel/filterPersonnel.js";
 // Variables
 const allLocations = new Array();
 const locationBase = document.getElementById("locationsBase");
@@ -43,6 +46,7 @@ class Location {
       // Set the location to a global variable
       getLocationByID(this.id, "editLocation");
     });
+
     // Append & Return
     base.append(nameLocation, showMoreButton);
     return base;
@@ -84,8 +88,19 @@ const getAllLocations = async () => {
         newSelectFilteringElement.classList.add(
           "filterPersonnel__Base__BlockQuoteLocation__Button"
         );
-        newSelectFilteringElement.addEventListener("click", () => {
-          console.log("hoas");
+        newSelectFilteringElement.disabled = true;
+        newSelectFilteringElement.addEventListener("click", (a) => {
+          // If the button is disabled
+          if (
+            newSelectFilteringElement.classList.contains("disabled") === true
+          ) {
+            removeFilterPersonnel(a, "Location");
+            return newSelectFilteringElement.classList.remove("disabled");
+          }
+
+          // If the button is not disable
+          filterPersonnel(a, "Location");
+          newSelectFilteringElement.classList.add("disabled");
         });
         document
           .querySelector("#filterPersonnel__Base__BlockQuoteLocation")

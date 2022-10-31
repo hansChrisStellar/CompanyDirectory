@@ -3,6 +3,7 @@ import {
   filterPersonnel,
   removeFilterPersonnel,
 } from "../Personnel/filterPersonnel.js";
+import { getLocationByID } from "../Location/getLocationByID.js";
 
 // Variables
 const allDepartments = new Array();
@@ -65,7 +66,7 @@ const getAllDepartment = async () => {
     .then((response) => response.json())
     .then((data) => {
       // For each array given
-      const eachDepartment = data.data.forEach((department) => {
+      const eachDepartment = data.data.forEach(async (department) => {
         // Create new object
         let newDepartment = new Department(
           department.id,
@@ -93,17 +94,18 @@ const getAllDepartment = async () => {
         newSelectFilteringElement.classList.add(
           "filterPersonnel__Base__BlockQuoteDepartment__Button"
         );
+        newSelectFilteringElement.disabled = true;
         newSelectFilteringElement.addEventListener("click", (a) => {
           // If the button is disabled
           if (
             newSelectFilteringElement.classList.contains("disabled") === true
           ) {
-            removeFilterPersonnel(a);
+            removeFilterPersonnel(a, "Department");
             return newSelectFilteringElement.classList.remove("disabled");
           }
 
           // If the button is not disable
-          filterPersonnel(a);
+          filterPersonnel(a, "Department");
           newSelectFilteringElement.classList.add("disabled");
         });
         // Add them to the departments list filter

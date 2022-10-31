@@ -24,15 +24,17 @@ const getLocationByID = async (id, mode) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      locationRequestedByID = data.data;
       if (mode === "editLocation") {
         document.getElementById("nameLocationEdit").value =
           locationRequestedByID.name;
         document.getElementById("modalEditLocation__BaseColorInput").value =
           locationRequestedByID.color;
       }
+      locationRequestedByID = data.data;
     })
     .catch((error) => {});
+
+  return locationRequestedByID;
 };
 
 // Clear out global Personnel variable
