@@ -17,42 +17,23 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-# Decrement the location from the column of departments in the table of Locations
-// $query = $conn->prepare("UPDATE location L SET L.dpQuantity = L.dpQuantity - 1 WHERE L.id = ?");
-// $query->bind_param("i", $_POST['locationID']);
-// $query->execute();
+# If theres a relation 
+$query = 'SELECT COUNT(*) FROM personnel WHERE departmentID	=' . $_POST['id'];
+$result = $conn->query($query);
+$personnel = [];
 
-# If there was any error with the query
-// if (false === $query) {
-// 	$output['status']['code'] = "400";
-// 	$output['status']['name'] = "executed";
-// 	$output['status']['description'] = "query failed";
-// 	$output['data'] = [];
-// 	mysqli_close($conn);
-// 	echo json_encode($output);
-// 	exit;
-// }
+while ($row = mysqli_fetch_assoc($result)) {
+	array_push($personnel, $row);
+}
 
-# Check if there's a relation within the department and the personnels or if theres any personnel inside the department
-// $query = 'SELECT COUNT(*) FROM personnel WHERE departmentID	=' . $_POST['id'];
-// $result = $conn->query($query);
-// $data = [];
-
-// while ($row = mysqli_fetch_assoc($result)) {
-// 	array_push($data, $row);
-// }
-
-# If theres a relation
-// if (intval($data[0]["COUNT(*)"]) > 0) {
-// 	$output['status']['code'] = "400";
-// 	$output['status']['name'] = "executed";
-// 	$output['status']['description'] = "query failed for relationship";
-// 	$output['status']['has_relation'] = true;
-// 	$output['data'] = [];
-// 	mysqli_close($conn);
-// 	echo json_encode($output);
-// 	exit;
-// }
+if (intval($personnel[0]["COUNT(*)"]) > 0) {
+	$output['status']['code'] = "400";
+	$output['status']['name'] = "executed";
+	$output['status']['description'] = "There's personnel in this department, please, remove it, and try again.";
+	mysqli_close($conn);
+	echo json_encode($output);
+	exit;
+}
 
 # If there's not a relation, procced to delete department
 $query = $conn->prepare('DELETE FROM department WHERE id = ?');
@@ -69,6 +50,16 @@ if (false === $query) {
 	echo json_encode($output);
 	exit;
 }
+
+# Update the quantity number of pers on deps and deps on locs
+$conn->query("UPDATE location SET dpQuantity = 0");
+$conn->query("UPDATE location L, (
+		SELECT D.locationID, COUNT(D.id) AS total_deps 
+		FROM department D
+		GROUP BY D.locationID
+		) S
+SET L.dpQuantity = S.total_deps
+WHERE L.id = S.locationID");
 
 # If there's not a problem, delete the department
 $output['status']['code'] = "200";

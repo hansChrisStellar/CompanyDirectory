@@ -1,5 +1,3 @@
-
-
 <?php
 
 echo 
@@ -9,10 +7,8 @@ echo
 
       <nav class="modalEditDepartment__BaseNav">
 
-        <h2 class="modalEditDepartment__BaseNavTitle">Edit Department</h2>
-
         <button id="modalEditDepartment__BaseNavButtonGoBack" class="modalEditDepartment__BaseNavButtonGoBack">
-          Go Back
+          <i class="fa-solid fa-xmark"></i>
         </button>
 
       </nav>
@@ -58,7 +54,7 @@ echo
 <style>
 
   .notVisible {
-    background-color: red;
+    background: var(--backgroundBase);
     position: fixed;
     top: 0;
     width: 100%;
@@ -69,11 +65,11 @@ echo
     pointer-events: none;
     opacity: 0;
     transition: 0.2s;
-    z-index: 1;
+    z-index: 10;
   }
 
   .modalEditDepartment{
-    background-color: red;
+    background: var(--backgroundBase);
     position: fixed;
     top: 0;
     width: 100%;
@@ -84,24 +80,41 @@ echo
     pointer-events: all;
     opacity: 1;
     transition: 0.2s;
-    z-index: 1;
+    z-index: 10;
+  }
+
+  .modalEditDepartment__BaseNavButtonGoBack {
+    background: none;
+    font-size: 1rem;
+    border: none;
+    color: red;
   }
 
   .modalEditDepartment__Base {
     display: flex;
     flex-direction: column;
-    background-color: blue;
-    padding: 1rem;
-  }
-
-  .modalEditDepartment__BaseNav {
-    display: flex;
-    flex-direction: column;
+    background-color: var(--elementsBaseColor);
+    padding: 2rem;
+    border-radius: 1rem;
   }
 
   .modalEditDepartment__BaseNav {
     display: flex;
     flex-direction: row;
+    margin-bottom: 1rem;
+    justify-content: flex-end;
+  }
+
+   .modalEditDepartment__BaseFormButtonSend {
+    background: #216fed;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+  }
+
+  .modalEditDepartment__BaseColor {
+    margin-bottom: 1rem;
   }
 
   .modalEditDepartment__BaseForm {
@@ -111,6 +124,7 @@ echo
 
   .modalEditDepartment__BaseFormInput {
     margin-bottom: 1rem;
+    padding: .5rem;
   }
 </style>
 

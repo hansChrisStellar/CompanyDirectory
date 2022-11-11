@@ -18,7 +18,19 @@ if (mysqli_connect_errno()) {
 }
 
 # Read all the data from the table of departments
-$query = 'SELECT id, name, locationID, empNmbr, color FROM department';
+$query = 'SELECT 
+	d.id, 
+	d.name,
+	d.locationID,
+	d.empNmbr, 
+	d.color, 
+	l.name as location
+FROM 
+	department d
+		LEFT JOIN 
+	location l ON (l.id = d.locationID)
+ORDER BY d.name, l.name';
+
 $result = $conn->query($query);
 
 # If there's an error reading it 

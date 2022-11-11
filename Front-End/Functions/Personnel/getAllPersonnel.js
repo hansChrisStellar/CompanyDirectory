@@ -1,8 +1,10 @@
 import { getPersonnelByID } from "./getPersonnelByID.js";
 
 // Variables
-const allPersonels = new Array();
+let allPersonels = new Array();
 const personnelsBase = document.getElementById("personnelsBase");
+let toggleDepartment = document.querySelector("#toggleDepartment");
+let toggleLocation = document.querySelector("#toggleLocation");
 
 // Personnel Class
 class Personnel {
@@ -15,7 +17,9 @@ class Personnel {
     email,
     department,
     location,
-    img
+    img,
+    revenue,
+    annualSalary
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -25,6 +29,8 @@ class Personnel {
     this.department = department;
     this.location = location;
     this.img = img;
+    this.revenue = revenue;
+    this.annualSalary = annualSalary;
   }
 
   // Create the HTML of every personnel
@@ -40,17 +46,34 @@ class Personnel {
         .getElementById("personnelInformation")
         .classList.remove("personnelInformationNotVisible");
 
+      // Image
       document
         .getElementById("personnelInformation__topHeader__Img")
         .setAttribute("src", this.img);
 
+      // First Name
       document.getElementById(
         "personnelInformation__topHeader__NameJobBase__Name"
       ).innerHTML = this.firstName;
 
+      // Second Name
       document.getElementById(
         "personnelInformation__topHeader__NameJobBase__Job"
       ).innerHTML = this.jobTitle;
+
+      // Annual Salary
+      document.getElementById("annualSalaryPersonnel").innerHTML =
+        this.annualSalary;
+
+      // Revenue
+      document.getElementById("revenue").innerHTML = this.revenue;
+
+      // Location
+      document.getElementById("locationPersonnel").innerHTML = this.location;
+
+      // Department
+      document.getElementById("departmentPersonnel").innerHTML =
+        this.department;
 
       // set the user to a global variable
       getPersonnelByID(this.id, "editPersonnel");
@@ -83,7 +106,7 @@ class Personnel {
     firstNamePersonnel.classList.add(
       "personelSection__ListOfPersonnels__BasePersonnel__RightSide__Name"
     );
-    firstNamePersonnel.innerHTML = this.firstName;
+    firstNamePersonnel.innerHTML = `${this.firstName} ${this.lastName}`;
     rightSide.appendChild(firstNamePersonnel);
 
     // Job Title
@@ -102,11 +125,16 @@ class Personnel {
 
 // Ajax the PHP File
 const getAllPersonnel = async () => {
+  // Spinner On
+  document.getElementById("loadingModal").classList.add("loadingModal");
+  document.getElementById("loadingModal").classList.remove("loadingModalOff");
   const response = await fetch(
     "http://localhost/CompanyDirectory/Back-End/Personnel/getAll.php"
   )
     .then((response) => response.json())
     .then((data) => {
+      allPersonels = [];
+      personnelsBase.innerHTML = "";
       // For each array given
       const eachPersonnel = data.data.forEach((personnel) => {
         // Create new object
@@ -118,7 +146,9 @@ const getAllPersonnel = async () => {
           personnel.email,
           personnel.department,
           personnel.location,
-          personnel.img
+          personnel.img,
+          personnel.annualSalary,
+          personnel.revenue
         );
         // Create the HTML
         personnelsBase.appendChild(newPersonnel.createHTML());
@@ -128,6 +158,9 @@ const getAllPersonnel = async () => {
       return allPersonels;
     })
     .catch((error) => {});
+  // Spinner Off
+  document.getElementById("loadingModal").classList.add("loadingModalOff");
+  document.getElementById("loadingModal").classList.remove("loadingModal");
 };
 
 // Search Function Personnel
@@ -138,6 +171,31 @@ document
   });
 
 const searchPersonnel = (value) => {
+  // Clear all the filters
+  document
+    .querySelectorAll(".filterPersonnel__Base__BlockQuoteDepartment__Button")
+    .forEach((b) => {
+      // Remove the disabled classes for all the buttons
+      b.classList.remove("disabled");
+      // Assign the disabled status to all the buttons
+      return (b.disabled = true);
+    });
+
+  document
+    .querySelectorAll(".filterPersonnel__Base__BlockQuoteLocation__Button")
+    .forEach((b) => {
+      // Remove the disabled classes for all the buttons
+      b.classList.remove("disabled");
+      // Assign the disabled status to all the buttons
+      return (b.disabled = true);
+    });
+
+  // Toggle all the switchs
+  toggleDepartment.classList.remove("fa-toggle-on");
+  toggleDepartment.classList.add("fa-toggle-off");
+  toggleLocation.classList.remove("fa-toggle-on");
+  toggleLocation.classList.add("fa-toggle-off");
+
   // Erase the data on the Personnel Base
   document.getElementById("personnelsBase").textContent = "";
   // Filter the allPersonnels with the value passed

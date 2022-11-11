@@ -7,10 +7,8 @@ echo
 
       <nav class="modalEditLocation__BaseNav">
 
-        <h2 class="modalEditLocation__BaseNavTitle">Edit Location</h2>
-
         <button id="modalEditLocation__BaseNavButtonGoBack" class="modalEditLocation__BaseNavButtonGoBack">
-          Go Back
+          <i class="fa-solid fa-xmark"></i>
         </button>
 
       </nav>
@@ -50,7 +48,7 @@ echo
 <style>
 
   .notVisible {
-    background-color: red;
+    background: var(--backgroundBase);
     position: fixed;
     top: 0;
     width: 100%;
@@ -61,11 +59,11 @@ echo
     pointer-events: none;
     opacity: 0;
     transition: 0.2s;
-    z-index: 2;
+    z-index: 8;
   }
 
   .modalEditLocation{
-    background-color: red;
+    background: var(--backgroundBase);
     position: fixed;
     top: 0;
     width: 100%;
@@ -76,24 +74,50 @@ echo
     pointer-events: all;
     opacity: 1;
     transition: 0.2s;
-    z-index: 2;
+    z-index: 8;
+  }
+
+  .modalEditLocation__BaseNavButtonGoBack {
+    background: none;
+    font-size: 1rem;
+    border: none;
+    color: red;
   }
 
   .modalEditLocation__Base {
     display: flex;
     flex-direction: column;
-    background-color: blue;
-    padding: 1rem;
-  }
-
-  .modalEditLocation__BaseNav {
-    display: flex;
-    flex-direction: column;
+    background-color: var(--elementsBaseColor);
+    padding: 2rem;
+    border-radius: 1rem;
   }
 
   .modalEditLocation__BaseNav {
     display: flex;
     flex-direction: row;
+    margin-bottom: 1rem;
+    justify-content: flex-end;
+  }
+
+  .modalEditLocation__BaseFormButtonSend {
+    background: #216fed;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+  }
+
+  .modalEditLocation__BaseColor {
+    margin-bottom: 1rem;
+  }
+
+  .modalEditLocation__BaseNav {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .modalEditLocation__BaseColor {
+    margin-bottom: 1rem;
   }
 
   .modalEditLocation__BaseForm {
@@ -103,6 +127,7 @@ echo
 
   .modalEditLocation__BaseFormInput {
     margin-bottom: 1rem;
+    padding: .5rem;
   }
 </style>
 

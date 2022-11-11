@@ -17,9 +17,9 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-# Increment the personnel from the column of departments in the table of Departments
-$query = $conn->prepare("UPDATE department D SET D.empNmbr = D.empNmbr + 1 WHERE D.id = ?");
-$query->bind_param("i", $_POST['department']);
+# Insert the new personnel
+$query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, img) VALUES(?,?,?,?,?,?)');
+$query->bind_param("ssssis", $_POST['firstName'], $_POST['lastName'], $_POST['jobTitle'], $_POST['email'], $_POST['departmentID'], $_POST['img']);
 $query->execute();
 
 # If there was any error with the query
@@ -33,10 +33,24 @@ if (false === $query) {
 	exit;
 }
 
-# Insert into the personnels the new personnel
-$query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, img) VALUES(?,?,?,?,?,?)');
-$query->bind_param("ssssis", $_POST['firstName'], $_POST['lastName'], $_POST['jobTitle'], $_POST['email'], $_POST['departmentID'], $_POST['img']);
-$query->execute();
+# Update the quantity number of pers on deps and deps on locs
+$conn->query("UPDATE department SET empNmbr = 0");
+$conn->query("UPDATE department D, (
+		SELECT P.departmentID, COUNT(P.id) AS total_emp 
+		FROM personnel P
+		GROUP BY P.departmentID
+		) S
+SET D.empNmbr = S.total_emp
+WHERE D.id = S.departmentID");
+
+$conn->query("UPDATE location SET personnelQuanity = 0");
+$conn->query("UPDATE location L, (
+		SELECT P.locationID, COUNT(P.id) AS total_emp 
+		FROM personnel P
+		GROUP BY P.locationID
+		) S
+SET L.personnelQuanity = S.total_emp
+WHERE L.id = S.locationID"); 
 
 # If there was any error with the query
 if (false === $query) {

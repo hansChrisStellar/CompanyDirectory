@@ -1,7 +1,12 @@
 import {
   departmentRequestedByID,
   clearOutDepartment,
+  getDepartmentByID,
 } from "./getDepartmentByID.js";
+
+import { getAllPersonnel } from "../Personnel/getAllPersonnel.js";
+import { getAllDepartment } from "../Department/getAllDepartment.js";
+import { getAllLocations } from "../Location/getAllLocations.js";
 
 // Input Texts
 document.querySelector("#nameDepartmentEdit").addEventListener("input", (a) => {
@@ -27,6 +32,9 @@ document
   });
 
 const updateDepartment = async (personnelData) => {
+  // Spinner On
+  document.getElementById("loadingModal").classList.add("loadingModal");
+  document.getElementById("loadingModal").classList.remove("loadingModalOff");
   // Send the data to the PHP File with Fetch
   const response = await fetch(
     "http://localhost/CompanyDirectory/Back-End/Department/updateDepartment.php",
@@ -45,8 +53,22 @@ const updateDepartment = async (personnelData) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
+      document
+        .getElementById("modalEditDepartment")
+        .classList.remove("modalEditDepartment");
+      document
+        .getElementById("modalEditDepartment")
+        .classList.add("notVisible");
+      // Update the global
+      getAllPersonnel();
+      getAllDepartment();
+      getAllLocations();
+      // Update the modal
+      getDepartmentByID(departmentRequestedByID.id, "editDepartment");
     });
+  // Spinner Off
+  document.getElementById("loadingModal").classList.add("loadingModalOff");
+  document.getElementById("loadingModal").classList.remove("loadingModal");
 };
 
 // Close Modal Edit Department
@@ -57,5 +79,4 @@ document
       .getElementById("modalEditDepartment")
       .classList.remove("modalEditDepartment");
     document.getElementById("modalEditDepartment").classList.add("notVisible");
-    clearOutDepartment();
   });

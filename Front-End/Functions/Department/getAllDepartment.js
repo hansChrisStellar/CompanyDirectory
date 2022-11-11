@@ -12,12 +12,13 @@ const departmentsBase = document.getElementById("departmentsBase");
 // Personnel Class
 class Department {
   // Personnel innitial information
-  constructor(id, name, locationID, color, empNmbr) {
+  constructor(id, name, locationID, color, empNmbr, location) {
     this.id = id;
     this.name = name;
     this.locationID = locationID;
     this.color = color;
     this.empNmbr = empNmbr;
+    this.location = location;
   }
 
   // Create the HTML of every personnel
@@ -31,7 +32,7 @@ class Department {
 
     // Show More Button
     const showMoreButton = document.createElement("button");
-    showMoreButton.innerHTML = "Show More";
+    showMoreButton.innerHTML = "<i class='fa-solid fa-caret-down'></i>";
     showMoreButton.addEventListener("click", () => {
       // Open the modal for department information
       document
@@ -40,11 +41,6 @@ class Department {
       document
         .getElementById("departmentInformation")
         .classList.remove("departmentInformationNotVisible");
-
-      // Name Department
-      document.getElementById(
-        "departmentInformation__topHeader__NameJobBase__Name"
-      ).innerHTML = this.name;
 
       // set the department to a global variable
       getDepartmentByID(this.id, "editDepartment");
@@ -65,6 +61,14 @@ const getAllDepartment = async () => {
   )
     .then((response) => response.json())
     .then((data) => {
+      // Clear all the dropdowns first
+      document.querySelector("#departmentIDCreate").innerHTML = "";
+      document.querySelector("#departmentIDEdit").innerHTML = "";
+      // Clear all the filters
+      document.querySelector(
+        "#filterPersonnel__Base__BlockQuoteDepartment"
+      ).innerHTML = "";
+      departmentsBase.innerHTML = "";
       // For each array given
       const eachDepartment = data.data.forEach(async (department) => {
         // Create new object
@@ -73,12 +77,14 @@ const getAllDepartment = async () => {
           department.name,
           department.locationID,
           department.color,
-          department.empNmbr
+          department.empNmbr,
+          department.location
         );
         // Create the HTML
         departmentsBase.appendChild(newDepartment.createHTML());
         // Push object into array
         allDepartments.push(newDepartment);
+
         // Every department dropdown insert data
         document
           .querySelectorAll("#departmentIDCreate, #departmentIDEdit")
@@ -101,14 +107,18 @@ const getAllDepartment = async () => {
             newSelectFilteringElement.classList.contains("disabled") === true
           ) {
             removeFilterPersonnel(a, "Department");
+            newSelectFilteringElement.classList.add(
+              "filterPersonnel__Base__BlockQuoteDepartment__Button"
+            );
             return newSelectFilteringElement.classList.remove("disabled");
           }
 
-          // If the button is not disable
+          // If the button is not disabled
           filterPersonnel(a, "Department");
           newSelectFilteringElement.classList.add("disabled");
         });
         // Add them to the departments list filter
+
         document
           .querySelector("#filterPersonnel__Base__BlockQuoteDepartment")
           .appendChild(newSelectFilteringElement);

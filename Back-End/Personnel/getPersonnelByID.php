@@ -19,7 +19,24 @@ if (mysqli_connect_errno()) {
 }	
 
 # Query to select a personnel by ID
-$query = $conn->prepare('SELECT * from personnel WHERE id = ?');
+$query = $conn->prepare('SELECT 
+	p.id, 
+	p.lastName, 
+	p.firstName, 
+	p.jobTitle, 
+	p.email, 
+	p.img, 
+	p.departmentID,
+	p.revenue, 
+	p.annualSalary, 
+	d.name as department, 
+	l.name as location 
+FROM personnel p 
+		LEFT JOIN department d ON (d.id = p.departmentID) 
+		LEFT JOIN location l ON (l.id = d.locationID) 
+WHERE p.id = ?');
+// $query = $conn->prepare('SELECT * from personnel WHERE id = ?');
+
 $query->bind_param("i", $_POST['id']);
 $query->execute();
 

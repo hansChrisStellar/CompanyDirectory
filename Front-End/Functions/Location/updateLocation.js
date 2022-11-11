@@ -1,4 +1,12 @@
-import { clearOutLocation, locationRequestedByID } from "./getLocationByID.js";
+import {
+  clearOutLocation,
+  locationRequestedByID,
+  getLocationByID,
+} from "./getLocationByID.js";
+
+import { getAllPersonnel } from "../Personnel/getAllPersonnel.js";
+import { getAllDepartment } from "../Department/getAllDepartment.js";
+import { getAllLocations } from "../Location/getAllLocations.js";
 
 // Inputs Texts
 document.querySelector("#nameLocationEdit").addEventListener("input", (a) => {
@@ -13,7 +21,9 @@ document
   });
 
 const updateLocation = async (locationData) => {
-  console.log(locationData);
+  // Spinner On
+  document.getElementById("loadingModal").classList.add("loadingModal");
+  document.getElementById("loadingModal").classList.remove("loadingModalOff");
   // Send the data to the PHP File with Fetch
   const response = await fetch(
     "http://localhost/CompanyDirectory/Back-End/Location/updateLocation.php",
@@ -32,8 +42,20 @@ const updateLocation = async (locationData) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
+      document
+        .getElementById("modalEditLocation")
+        .classList.remove("modalEditLocation");
+      document.getElementById("modalEditLocation").classList.add("notVisible");
+      // Update the global
+      getAllPersonnel();
+      getAllDepartment();
+      getAllLocations();
+      // Update the modal
+      getLocationByID(locationRequestedByID.id, "editLocation");
     });
+  // Spinner Off
+  document.getElementById("loadingModal").classList.add("loadingModalOff");
+  document.getElementById("loadingModal").classList.remove("loadingModal");
 };
 
 // Close Modal Edit Department
@@ -44,7 +66,6 @@ document
       .getElementById("modalEditLocation")
       .classList.remove("modalEditLocation");
     document.getElementById("modalEditLocation").classList.add("notVisible");
-    clearOutLocation();
   });
 
 // Fire Update Location

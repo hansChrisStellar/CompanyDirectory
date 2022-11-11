@@ -19,7 +19,7 @@ if (mysqli_connect_errno()) {
 }	
 
 # Read all the locations 
-$query = 'SELECT name, id, dpQuantity, color FROM location';
+$query = 'SELECT name, id, dpQuantity, color, personnelQuanity FROM location';
 $result = $conn->query($query);
 
 # If there was a problem reading the query

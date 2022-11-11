@@ -1,8 +1,12 @@
 // Variables
-let departmentRequestedByID;
+let departmentRequestedByID = {};
 
 // Ajax the PHP File
 const getDepartmentByID = async (id, mode) => {
+  // Spinner On
+  document.getElementById("loadingModal").classList.add("loadingModal");
+  document.getElementById("loadingModal").classList.remove("loadingModalOff");
+
   const data = {
     id: id,
   };
@@ -25,6 +29,7 @@ const getDepartmentByID = async (id, mode) => {
     .then((response) => response.json())
     .then((data) => {
       departmentRequestedByID = data.data[0];
+      console.log(departmentRequestedByID);
       if (mode === "editDepartment") {
         document.getElementById("nameDepartmentEdit").value =
           departmentRequestedByID.name;
@@ -33,8 +38,24 @@ const getDepartmentByID = async (id, mode) => {
         document.getElementById("modalEditDepartment__BaseColorInput").value =
           departmentRequestedByID.color;
       }
+      // Name Department
+      document.getElementById(
+        "departmentInformation__topHeader__NameJobBase__Name"
+      ).innerHTML = departmentRequestedByID.name;
+
+      // Personnels
+      document.getElementById("departmentPersonnels").innerHTML =
+        departmentRequestedByID.empNmbr;
+
+      // Location
+      document.getElementById("departmentLocation").innerHTML =
+        departmentRequestedByID.location;
     })
     .catch((error) => {});
+
+  // Spinner Off
+  document.getElementById("loadingModal").classList.add("loadingModalOff");
+  document.getElementById("loadingModal").classList.remove("loadingModal");
 };
 
 // Clear out global Personnel variable

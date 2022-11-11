@@ -18,41 +18,9 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-// Decrement the location from the column of departments
-$query = $conn->prepare("UPDATE department D SET D.empNmbr = D.empNmbr - 1 WHERE D.id = ?");
-$query->bind_param("i", $_POST['pastDepartment']);
-$query->execute();
-
-// # If there was a problem with the query
-if (false === $query) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-	mysqli_close($conn);
-	echo json_encode($output);
-	exit;
-}
-
-// Increment the location from the column of departments
-$query = $conn->prepare("UPDATE department D SET D.empNmbr = D.empNmbr + 1 WHERE D.id = ?");
-$query->bind_param("i", $_POST['departmentID']);
-$query->execute();
-
-// # If there was a problem with the query
-if (false === $query) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-	mysqli_close($conn);
-	echo json_encode($output);
-	exit;
-}
-
 # Prepare the query to update personnel
-$query = $conn->prepare('UPDATE personnel SET firstName=?, lastName=?, jobTitle=?, email=?, departmentID=?, img=? WHERE id=?');
-$query->bind_param("ssssisi", $_POST['firstName'], $_POST['lastName'], $_POST['jobTitle'], $_POST['email'], $_POST['departmentID'], $_POST['img'], $_POST['id']);
+$query = $conn->prepare('UPDATE personnel SET firstName=?, lastName=?, jobTitle=?, email=?, departmentID=?, img=?, locationID=? WHERE id=?');
+$query->bind_param("ssssisii", $_POST['firstName'], $_POST['lastName'], $_POST['jobTitle'], $_POST['email'], $_POST['departmentID'], $_POST['img'], $_POST['locationID'], $_POST['id']);
 $query->execute();
 
 # If there was a problem with the query
@@ -65,6 +33,25 @@ if (false === $query) {
 	echo json_encode($output);
 	exit;
 }
+
+# Update the quantity number of pers on deps and deps on locs
+$conn->query("UPDATE department SET empNmbr = 0");
+$conn->query("UPDATE department D, (
+		SELECT P.departmentID, COUNT(P.id) AS total_emp 
+		FROM personnel P
+		GROUP BY P.departmentID
+		) S
+SET D.empNmbr = S.total_emp
+WHERE D.id = S.departmentID");
+
+$conn->query("UPDATE location SET personnelQuanity = 0");
+$conn->query("UPDATE location L, (
+		SELECT P.locationID, COUNT(P.id) AS total_emp 
+		FROM personnel P
+		GROUP BY P.locationID
+		) S
+SET L.personnelQuanity = S.total_emp
+WHERE L.id = S.locationID"); 
 
 # If there wasn't a problem with the query, we procced to update the department
 $output['status']['code'] = "200";

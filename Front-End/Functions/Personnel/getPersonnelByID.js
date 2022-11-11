@@ -1,12 +1,14 @@
 // Variables
-let personnelRequestedByID;
+let personnelRequestedByID = {};
 
 // Ajax the PHP File
 const getPersonnelByID = async (id, mode) => {
+  // Spinner On
+  document.getElementById("loadingModal").classList.add("loadingModal");
+  document.getElementById("loadingModal").classList.remove("loadingModalOff");
   const data = {
-    id: id,
+    id: parseInt(id),
   };
-
   const response = await fetch(
     "http://localhost/CompanyDirectory/Back-End/Personnel/getPersonnelByID.php",
     {
@@ -36,9 +38,45 @@ const getPersonnelByID = async (id, mode) => {
           personnelRequestedByID.email;
         document.getElementById("departmentIDEdit").value =
           personnelRequestedByID.departmentID;
+
+        // Modal Information
+        // Image
+        document
+          .getElementById("personnelInformation__topHeader__Img")
+          .setAttribute("src", personnelRequestedByID.img);
+
+        // First Name
+        document.getElementById(
+          "personnelInformation__topHeader__NameJobBase__Name"
+        ).innerHTML = personnelRequestedByID.firstName;
+
+        // Second Name
+        document.getElementById(
+          "personnelInformation__topHeader__NameJobBase__Job"
+        ).innerHTML = personnelRequestedByID.jobTitle;
+
+        // Annual Salary
+        document.getElementById("annualSalaryPersonnel").innerHTML =
+          personnelRequestedByID.annualSalary;
+
+        // Revenue
+        document.getElementById("revenue").innerHTML =
+          personnelRequestedByID.revenue;
+
+        // Location
+        document.getElementById("locationPersonnel").innerHTML =
+          personnelRequestedByID.location;
+
+        // Department
+        document.getElementById("departmentPersonnel").innerHTML =
+          personnelRequestedByID.department;
       }
     })
     .catch((error) => {});
+
+  // Spinner Off
+  document.getElementById("loadingModal").classList.add("loadingModalOff");
+  document.getElementById("loadingModal").classList.remove("loadingModal");
 };
 
 // Clear out global Personnel variable

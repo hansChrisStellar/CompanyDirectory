@@ -19,7 +19,22 @@ if (mysqli_connect_errno()) {
 }
 
 # If there's not an error we procced to read a department by ID 
-$query = $conn->prepare('SELECT id, name, locationID, color FROM department WHERE id = ?');
+// $query = $conn->prepare('SELECT id, name, locationID, color FROM department WHERE id = ?');
+
+$query = $conn->prepare('SELECT 
+	d.id, 
+	d.name,
+	d.locationID,
+	d.empNmbr, 
+	d.color, 
+	l.name as location
+FROM 
+	department d
+		LEFT JOIN 
+	location l ON (l.id = d.locationID)
+WHERE d.id = ?');
+
+
 $query->bind_param("i", $_POST['id']);
 $query->execute();
 

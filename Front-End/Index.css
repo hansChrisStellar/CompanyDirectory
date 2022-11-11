@@ -1,4 +1,30 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+:root {
+  --elementsBaseColor: #f2f1fa;
+  --backgroundBase: linear-gradient(
+    130deg,
+    rgb(160 114 238) 0%,
+    rgb(81 50 255) 100%
+  );
+  --backgroundBase2: #e1dcfd;
+  --buttons: #216fed;
+  --red: #ff4769;
+  --formalFont: "Roboto Serif", serif;
+}
+
+html {
+  background: var(--elementsBaseColor);
+}
+
+.noClickEvent {
+  pointer-events: none;
+}
+
+.toggleOn {
+  color: green;
 }

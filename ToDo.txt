@@ -1,5 +1,5 @@
 Haciendo
-- traer todas las localizaciones y establecer los dropdowns
+- Actualizar y arreglar cuando se elimina un personnel
 
 Importante
 

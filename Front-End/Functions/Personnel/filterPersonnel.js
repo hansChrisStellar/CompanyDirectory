@@ -35,7 +35,6 @@ const filterPersonnel = (method, mode) => {
     // Create the HTML
     personnelsBase.appendChild(newPersonnel.createHTML());
   });
-  console.log(upComingFiltersArray);
 };
 
 const removeFilterPersonnel = (method, mode) => {
@@ -104,16 +103,18 @@ const removeFilterPersonnel = (method, mode) => {
   });
 };
 
+let toggleDepartment = document.querySelector("#toggleDepartment");
+let toggleLocation = document.querySelector("#toggleLocation");
+
 // Activate Departments Filtering Buttons
 document
   .querySelector(".filterPersonnel__Base__DepartmentSelection__Button")
-  .addEventListener("click", () => {
+  .addEventListener("click", (a) => {
     document
       .querySelectorAll(".filterPersonnel__Base__BlockQuoteDepartment__Button")
       .forEach((b) => {
         // Remove the disabled classes for all the buttons
         b.classList.remove("disabled");
-
         // Assign the disabled status to all the buttons
         if (b.disabled === false) {
           return (b.disabled = true);
@@ -153,6 +154,21 @@ document
         // Assign the disabled status to all the buttons
         return (b.disabled = true);
       });
+
+    // Switch Toggle
+
+    toggleLocation.classList.remove("fa-toggle-on");
+    toggleLocation.classList.add("fa-toggle-off");
+
+    if (toggleDepartment.classList.contains("fa-toggle-off")) {
+      return (
+        toggleDepartment.classList.remove("fa-toggle-off"),
+        toggleDepartment.classList.add("fa-toggle-on")
+      );
+    }
+
+    toggleDepartment.classList.remove("fa-toggle-on");
+    toggleDepartment.classList.add("fa-toggle-off");
   });
 
 // Activate Locations Filtering Buttons
@@ -204,6 +220,21 @@ document
         // Assign the disabled status to all the buttons
         return (b.disabled = true);
       });
+
+    // Switch Toggle
+
+    toggleDepartment.classList.remove("fa-toggle-on");
+    toggleDepartment.classList.add("fa-toggle-off");
+
+    if (toggleLocation.classList.contains("fa-toggle-off")) {
+      return (
+        toggleLocation.classList.remove("fa-toggle-off"),
+        toggleLocation.classList.add("fa-toggle-on")
+      );
+    }
+
+    toggleLocation.classList.remove("fa-toggle-on");
+    toggleLocation.classList.add("fa-toggle-off");
   });
 
 export { filterPersonnel, removeFilterPersonnel };

@@ -18,25 +18,22 @@ if (mysqli_connect_errno()) {
 }	
 
 # Check if there's a relation within the location and the departments or if theres any department inside the location 
-// $query = 'SELECT COUNT(*) FROM department WHERE locationID=' . $_POST['idLocation'];
-// $result = $conn->query($query);
-// $data = [];
+$query = 'SELECT COUNT(*) FROM department WHERE locationID	=' . $_POST['id'];
+$result = $conn->query($query);
+$departments = [];
 
-// while ($row = mysqli_fetch_assoc($result)) {
-// 	array_push($data, $row);
-// }
+while ($row = mysqli_fetch_assoc($result)) {
+	array_push($departments, $row);
+}
 
-# If theres a relation
-// if (intval($data[0]["COUNT(*)"]) > 0) {
-// 	$output['status']['code'] = "400";
-// 	$output['status']['name'] = "executed";
-// 	$output['status']['description'] = "query failed for relationship";	
-// 	$output['status']['has_relation'] = true;	
-// 	$output['data'] = [];
-// 	mysqli_close($conn);
-// 	echo json_encode($output); 
-// 	exit;
-// }
+if (intval($departments[0]["COUNT(*)"]) > 0) {
+	$output['status']['code'] = "400";
+	$output['status']['name'] = "executed";
+	$output['status']['description'] = "There's departments in this location, please, remove or change it, and try again.";
+	mysqli_close($conn);
+	echo json_encode($output);
+	exit;
+}
 
 # If there's not a relation, procced to delete department
 $query = $conn->prepare('DELETE FROM location WHERE id=?');
